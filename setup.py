@@ -32,7 +32,7 @@ setup(
     description="Centralized 3-Tier Multi-Framework Distributed Control Plane Hub",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com",
+    url="https://github.com/PJHkorea/fng-infrastructure-core",
     packages=find_packages(),
     ext_modules=ext_modules,
     cmdclass={

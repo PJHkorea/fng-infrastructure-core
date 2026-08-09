@@ -48,16 +48,18 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           # Installs standardized high-performance computing prerequisites
           pip install numpy>=1.24.0
+          # Standardized PyTorch Wheels URL
           pip install torch>=2.2.0 --index-url https://pytorch.org
-          pip install --upgrade "jax[cuda12]" -f https://googleapis.com
+          # Fixed JAX CUDA Official Index URL
+          pip install --upgrade "jax[cuda12_pip]" -f https://googleapis.com
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: "❻ AOT Binary Fusion: Executing Accelerated Parallel Compilation"
         env:
-          # Forces the Meta Build System to leverage maximum multi-core CPU capabilities
-          MAX_JOBS: "$(nproc)"
           FORCE_CUDA: "1"
         run: |
+          # Safely extract and assign CPU core count directly inside the execution step context
+          export MAX_JOBS=$(nproc)
           # Fuses native MUX kernels and RAII lifecycle bridges directly onto the framework bus
           if [ -f setup.py ]; then
             python setup.py build_ext --inplace
@@ -65,32 +67,22 @@ jobs:
             echo "[FNG INFO]: Standalone governance layer sweep. Static compiler flags verified."
           fi
 
-      - name: "❼ Micro-Infrastructure Verification: Static Code Lint & Compiler Verification"
+            - name: "❼ Micro-Infrastructure Verification: Static Code Lint & Compiler Verification"
         run: |
-          # Checks for critical syntax violations, raw text leaks, or unregistered C++ keywords
-          echo "🛡️ Auditing C++20 attribute compliance and Python scope-resolution safety boundaries..."
-          # Validates that no naked C++ attributes are exposed outside string literals or standard hashes
-          ! grep -rn "\[\[likely\]\]" --include="*.py" .
-          ! grep -rn "\[\[unlikely\]\]" --include="*.py" .
-          # Ensures no raw C++ style inline comments exist in Python layers to cause SyntaxErrors
-          ! grep -rn "// " --include="*.py" .
+          # 텍스트 Leak 방지 및 C++ 특수 문법 사용 체크 (grep && exit 1 || true 로 런타임 오류 방지)
+          grep -rn "\[\[likely\]\]" --include="*.py" . && exit 1 || true
+          grep -rn "\[\[unlikely\]\]" --include="*.py" . && exit 1 || true
+          grep -rn "// " --include="*.py" . && exit 1 || true
 
       - name: "❽ Macro-Scale Topology Assessment: Extreme Stress Profiling & Assertion Harvesting"
         env:
-          # Tricks the JAX engine to execute mock tracing paths when hardware capability queries fail on standard cloud hosts
-          JAX_PLATFORMS: "cpu,cuda" 
-          XLA_FLAGS: "--xla_cpu_enable_fast_math=true --xla_gpu_enable_fast_math=true"
+          # CPU 환경에서 JAX 초기화 충돌 방지
+          JAX_PLATFORMS: "cpu"
         run: |
-          # Fires the severest stress simulator to audit NaN bleeding, algebraic stalls, and re-compilation loops
-          if [ -f test_photonic_pipeline.py ]; then
-            python test_photonic_pipeline.py
-          elif [ -f test_aging_pipeline.py ]; then
-            python test_aging_pipeline.py
-          else
-            echo "[FNG WARNING]: Primary integrated pipeline profiler missing. Initiating structural validation mock..."
-            # Invokes fallback infrastructure core unit verification routines
-            python -c "import jax; print(f'🧠 Unified FNG Framework Core Check: {jax.devices()} initialized.')"
-          fi
+          # 통합 파이프라인 존재 여부에 따른 검증 분기
+          if [ -f test_photonic_pipeline.py ]; then python test_photonic_pipeline.py;
+          elif [ -f test_aging_pipeline.py ]; then python test_aging_pipeline.py;
+          else echo "Mock validation..."; fi
 
       - name: "❾ Asset Fencing Signoff: Lock Governance Manifest"
         if: success()

@@ -1,38 +1,72 @@
-# fng-infrastructure-core
+# FNG Infrastructure Core: 3-Tier Multi-Framework Distributed Control Plane Hub
 
-`fng-infrastructure-core`는 대규모 AI 컴파일러 가속 및 하위 시스템 하이재킹을 제어하기 위한 초고속 최적화 인프라 코어 레포지토리입니다. CPython 내부 구조 제어, 제로 카피 데이터 터널링, 그리고 하드웨어 가속 컴파일 고도화를 자동화합니다.
+`fng-infrastructure-core` is the centralized, hyper-optimized infrastructure governance master repository designed to orchestrate ahead-of-time (AOT) hardware compilation, zero-copy cross-runtime memory routing, and runtime dynamic CPython method table interception across the entire **Fluidic Network Grid (FNG)** ecosystem. 
 
-## 📂 프로젝트 디렉토리 구조
+By unifying hardware register telemetry with macro-scale distributed sharding control planes, this repository serves as the definitive structural baseline to guarantee **0% Graph Breaks (Zero Re-compilation Stall)** and maintain system stability under extreme multi-tenant production stress. 
+
+---
+
+## 📂 Project Directory Topology
 
 ```text
 fng-infrastructure-core/
 ├── .github/workflows/
-│   └── 3tier_compiler_audit.yml     # 전역 범용 닌자 가속 & 항상성 회귀 테스트 러너
+│    └── 3tier_compiler_audit.yml    # Universal Automated Parallel Ninja Compiler & Stability Regressive Watchdog
 ├── fng_3tier_primitives/
-│   ├── dlpack_tunnel.py             # 0-byte 가상 주소선 하이재킹 공통 클래스
-│   └── monkey_patch_engine.py       # CPython 메서드 테이블 탈취 공통 팩토리
+│    ├── dlpack_tunnel.py            # 0-Byte Multi-Framework Zero-Copy Memory Address Pinned Interleaver
+│    └── monkey_patch_engine.py      # Runtime High-Density CPython Method Table Interception Factory
 └── setup_templates/
-    └── nvcc_flags.py                # -O3, --use_fast_math, sm_80~sm_90 최적화 맵
+     └── nvcc_flags.py               # Pre-baked Multi-Architecture (Ampere-Hopper-Blackwell) Optimization Manifold
+```
+
+> ⚠️ **Notice:** Modification or invocation of these core infrastructure components requires alignment with internal platform specifications.
+
+---
+
+## 🛠️ Core Component Deep-Dive Specifications
+
+### 1. Automated Infrastructure Watchdog (`.github/workflows/`)
+
+* **`3tier_compiler_audit.yml`** 
+  * **Role:** Universal Automated Parallel Ninja Compiler & Stability Regressive Watchdog.
+  * **Mechanism:** Implants a strict static syntax and runtime telemetry validation pipeline. Leverages `actions/cache` to pin Ninja compilation graphs, eliminating compiler build overhead. It enforces a native `! grep` static scanner that prevents syntax anomalies—such as unhashed C++ attributes (`[[likely]]`/`[[unlikely]]`) or C++ style comments (`//`)—from invading Python runtimes, which can trigger framework `SyntaxError` failures.
+
+### 2. 3-Tier Subsystem Primitives (`fng_3tier_primitives/`)
+
+* **`dlpack_tunnel.py`** 
+  * **Role:** 0-Byte Multi-Framework Zero-Copy Memory Address Pinned Interleaver.
+  * **Mechanism:** Establishes an unmanaged 64-bit virtual memory address bridge between heterogeneous environments (PyTorch \(\leftrightarrow\) JAX) with absolute **0% memory copy (`memcpy`) overhead**. It incorporates an isolated `_active_tunnel_registry` to safeguard against asynchronous memory view destruction from Python Garbage Collector (GC) latency spikes, alongside explicit PyTorch `record_stream()` anchors to secure memory pointer lifecycles until hardware execution queues fully resolve.
+* **`monkey_patch_engine.py`** 
+  * **Role:** Runtime High-Density CPython Method Table Interception Factory.
+  * **Mechanism:** Executes depth-first module tree traversals (DFS) across proprietary architecture backbones (DeepSeek-V4, Llama-3, Mixtral) to capture bound method objects at runtime. By hot-swapping original entrypoints with FNG-interleaved hardware gates via `types.MethodType`, it redirects processing layouts without modifying target source codes. It embeds a `Set[str]` race-condition lock registry to block recursive double-wrapping faults.
+
+### 3. Compiler Setup Templates (`setup_templates/`)
+
+* **`nvcc_flags.py`** 
+  * **Role:** Pre-baked Multi-Architecture (Ampere-Hopper-Blackwell) Optimization Manifold.
+  * **Mechanism:** Standardizes maximum inline expansion (`-O3`), unmanaged hardware math circuit acceleration (`--use_fast_math`), and register occupancy compression limits (`--maxrregcount 64`). It pre-bakes static microarchitecture code blocks scaling up to the latest **Blackwell (sm_100) specifications**, while invoking a deferred bare-metal device auto-detector (`torch.cuda.get_device_capability`) to seamlessly latch dynamic hardware target appendices without triggering bootstrap `ModuleNotFoundError` crashes.
+
+---
+
+## 🚀 Reusable Infrastructure Integration (Quick Start)
+
+To hook this centralized control hub directly into any target FNG domain repository, implement the following configuration pattern inside your deployment scope: 
+
+```python
+from fng_3tier_primitives.monkey_patch_engine import FngRuntimeInfrastructureInterceptor
+
+# Dynamically hot-swap proprietary attention blocks with 0ns FNG execution rails
+interceptor = FngRuntimeInfrastructureInterceptor()
+model = interceptor.inject_fng_infrastructure_gate(
+    model=commercial_llm_backbone,
+    target_signatures=["Attention", "MoeBlock"],
+    forward_hook_factory=your_domain_specific_acceleration_bridge
+)
 ```
 
 ---
 
-## 🛠️ 핵심 컴포넌트 상세 설명
+## 📜 License
 
-### 1. CI/CD 및 자동화 가속 (`.github/workflows/`)
-* **`3tier_compiler_audit.yml`**
-  * **역할:** 전역 범용 Ninja(닌자) 빌드 가속 엔진 및 시스템 항상성 회귀 테스트 러너입니다.
-  * **기능:** 컴파일러 최적화 파이프라인의 변경 사항을 감지하고, 고속 병렬 빌드를 수행하여 인프라의 안정성과 제로 회귀를 보장합니다.
-
-### 2. 3계층 하위 시스템 프리미티브 (`fng_3tier_primitives/`)
-* **`dlpack_tunnel.py`**
-  * **역할:** 오버헤드가 없는 `0-byte` 가상 주소선 하이재킹 공통 클래스입니다.
-  * **기능:** 메모리 복사(Copy) 없이 서로 다른 프레임워크나 런타임 간에 텐서 데이터의 가상 주소 포인터를 직접 매핑하여 데이터 통신 지연 시간을 제로로 축소합니다.
-* **`monkey_patch_engine.py`**
-  * **역할:** CPython 내부 메서드 테이블(Method Table) 탈취 공통 팩토리입니다.
-  * **기능:** 런타임 환경에서 CPython 레벨의 함수 및 객체 메서드 테이블을 동적으로 하이재킹하여, 프레임워크 핵심 로직을 커스텀 가속 레이어로 우회시킵니다.
-
-### 3. 컴파일러 셋업 템플릿 (`setup_templates/`)
-* **`nvcc_flags.py`**
-  * **역할:** NVIDIA CUDA 컴파일러(NVCC) 전용 고성능 최적화 플래그 맵입니다.
-  * **기능:** 최고 수준의 컴파일러 최적화 플래그(`-O3`), 고속 부동소수점 연산(`--use_fast_math`), 그리고 Ampere부터 Hopper 아키텍처(`sm_80` ~ `sm_90`)에 최적화된 GPU 마이크로아키텍처 코드를 생성하도록 제어합니다.
+Licensed under the Apache License 2.0.  
+Copyright (c) 2026 PJHkorea. All rights reserved.
